@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class GithubProjectPage {
     public static final String URL = "https://github.com/mihailovpn/QAGuruLesson8";
+    public static final String NAME = "QAGuruLesson8";
     public GithubProjectPage switchToMenuItem(GithubMenu githubMenu)  {
         $$(".UnderlineNav-body li").find(Condition.text(githubMenu.getDesc())).click();
 //        if (githubMenu == GithubMenu.CODE) {

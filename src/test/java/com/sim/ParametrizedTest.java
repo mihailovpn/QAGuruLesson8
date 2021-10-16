@@ -4,19 +4,22 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.sim.pages.GithubProjectPage;
+import com.sim.pages.YandexPage;
 import com.sim.testdata.GithubMenu;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ParametrizedTest {
     GithubProjectPage githubProjectPage = new GithubProjectPage();
+    YandexPage yandexPage = new YandexPage();
 
     @CsvSource({
             "https://github.com/mihailovpn/QAGuruLesson6, QAGuruLesson6",
@@ -33,13 +36,31 @@ public class ParametrizedTest {
 
     }
 
-    @EnumSource(value = GithubMenu.class)
-    @ParameterizedTest(name = "{1}")
+    @EnumSource(value = GithubMenu.class, names = {"CODE", "ISSUES"})
+    @ParameterizedTest(name = "{0}")
     void menuGithubTest(GithubMenu githubMenu) {
         Selenide.open(GithubProjectPage.URL);
         githubProjectPage.switchToMenuItem(githubMenu);
-        System.out.println();
+        $("[itemprop='name']").shouldHave(Condition.text(GithubProjectPage.NAME));
+    }
 
+    static Stream<Arguments> testWithMethodSource() {
+        return Stream.of(
+                Arguments.of(
+                        "1", "Первый канал"
+                ),
+                Arguments.of(
+                        "2", "Карта городов России"
+                )
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    void testWithMethodSource(String searchText, String expectedResult) {
+        Selenide.open(YandexPage.URL);
+        yandexPage.search(searchText);
+        $("[accesskey='1']").shouldHave(Condition.text(expectedResult));
     }
 
 
