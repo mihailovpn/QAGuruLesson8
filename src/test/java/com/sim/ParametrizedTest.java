@@ -6,15 +6,11 @@ import com.codeborne.selenide.Selenide;
 import com.sim.pages.GithubProjectPage;
 import com.sim.pages.YandexPage;
 import com.sim.testdata.GithubMenu;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
-import java.util.List;
 import java.util.stream.Stream;
 
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ParametrizedTest {
@@ -69,12 +65,9 @@ public class ParametrizedTest {
             "https://github.com/mihailovpn/QAGuruLesson7",
             "https://github.com/mihailovpn/QAGuruLesson8"
     })
-
     @ParameterizedTest(name = "Try opening repository: {0}")
     void openRepositoriesTests() {
         Selenide.open("https://github.com/mihailovpn/QAGuruLesson8");
         Configuration.startMaximized = true;
-
-
     }
 }
